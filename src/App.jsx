@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
+import Watchlist from './pages/Watchlist';
 import { MovieProvider } from './contexts/MovieContext';
 import './App.css';
 
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home searchQuery={searchQuery} />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/watchlist" element={<Watchlist />} />
           </Routes>
         </div>
       </Router>
