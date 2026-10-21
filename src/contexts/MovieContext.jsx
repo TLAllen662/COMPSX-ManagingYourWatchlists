@@ -1,9 +1,34 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 const MovieContext = createContext(null);
+const WATCHLIST_STORAGE_KEY = 'watchlistMovies';
+
+function loadWatchlist() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(WATCHLIST_STORAGE_KEY));
+    return Array.isArray(stored) ? stored : [];
+  } catch {
+    return [];
+  }
+}
 
 export function MovieProvider({ children }) {
-  const [watchlist, setWatchlist] = useState([]);
+  const [watchlist, setWatchlist] = useState(loadWatchlist);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(WATCHLIST_STORAGE_KEY, JSON.stringify(watchlist));
+    } catch {
+      // Storage may be unavailable or full; keep the in-memory state working.
+    }
+  }, [watchlist]);
 
   const addToWatchlist = useCallback((movie) => {
     setWatchlist((current) =>
